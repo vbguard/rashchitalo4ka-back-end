@@ -1,6 +1,5 @@
 module.exports = {
     "extends": ["eslint:recommended", "plugin:node/recommended", "plugin:prettier/recommended"],
-    // "plugins": ["prettier"],
     "rules": {
       "dot-location": ["error", "property"],
       "eqeqeq": 2,
@@ -14,14 +13,11 @@ module.exports = {
       }],
       "block-spacing": ["error", "always"],
       "computed-property-spacing": ["error", "never"],
-      // "comma-style": ["error", "last"],
-      // "comma-dangle": ["error", "never"],
       "brace-style": ["error"],
       "func-call-spacing": ["error", "never"],
       "id-length": ["error", { "min": 3 }],
       "array-bracket-newline": ["error", { "multiline": true, "minItems": 2 }],
       "quote-props": ["error", "as-needed"],
-      // "quotes": ["error", "single", { "allowTemplateLiterals": true }],
       "semi": "error",
       "semi-spacing": "error",
       "no-extra-semi": "error",
