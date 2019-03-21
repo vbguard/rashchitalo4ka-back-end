@@ -5,13 +5,15 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const morgan = require("morgan");
 
-const route = require("../../routes/index");
+const routes = require("../../routes/routes");
 const app = express();
 
 // Passport Config
-require("./passport")(passport);
+require("../passport/passport")(passport);
 
+// Get url to server MongoDB
 const dbUrl = require("../../../config/config").MondoDB.url;
+
 // Connect to MongoDB
 mongoose
   .connect(dbUrl, { useNewUrlParser: true })
@@ -51,12 +53,10 @@ app.use(function(req, res, next) {
   next();
 });
 
-// Routes
-app.use("/api", route);
-// app.use("/", require("../../routes/index"));
-// app.use("/api", require("../../routes/users"));
-// app.use("/api/user/finance", require("../../routes/finance"));
+// Connecting All API Routes
+app.use("/api", routes);
 
+// Get PORT for Express App
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));

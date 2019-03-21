@@ -7,7 +7,7 @@ const { ensureAuthenticated } = require("../middleware/authCheck");
 const finance = require("./finance");
 const users = require("./users");
 
-// Dashboard
+// Dashboard with checking user is authenticated?
 router.get("/dashboard", ensureAuthenticated, (req, res) =>
   res.render("dashboard", {
     user: req.user
@@ -15,8 +15,8 @@ router.get("/dashboard", ensureAuthenticated, (req, res) =>
 );
 
 // Register
-
 router.post("/register", users.postRegister);
+
 // Login
 router.post("/login", users.postLogin);
 

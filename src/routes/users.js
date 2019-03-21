@@ -5,12 +5,6 @@ const passport = require("passport");
 const User = require("../models/User.model");
 const UserFinance = require("../models/UserFinance.model");
 
-// Login Page
-// router.get("/login", (req, res) => res.render("login"));
-
-// Register Page
-// router.get("/register", (req, res) => res.status(200).send("register"));
-
 // Register
 module.exports.postRegister = (req, res) => {
   const { name, email, password, password2 } = req.body;
@@ -31,12 +25,15 @@ module.exports.postRegister = (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.status(301).json({
-      errors,
-      name,
-      email,
-      path: "/register"
-    });
+    res
+      .status(301)
+      .json({
+        errors,
+        name,
+        email,
+        path: "/register"
+      })
+      .redirect("/register");
   } else {
     User.findOne({ email: email }).then(user => {
       if (user) {
@@ -69,7 +66,9 @@ module.exports.postRegister = (req, res) => {
                     "success_msg",
                     "You are now registered and can log in"
                   );
-                  res.json({ userData: user, userFinance, path: "/login" });
+                  res
+                    .json({ userData: user, userFinance, path: "/login" })
+                    .redirect("/login");
                 });
               })
               .catch(err => console.log(err));
