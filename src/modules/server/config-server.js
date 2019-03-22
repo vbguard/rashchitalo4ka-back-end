@@ -5,6 +5,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const morgan = require("morgan");
 
+const swaggerDoc = require("../swagger/swaggerDoc");
 const routes = require("../../routes/routes");
 const app = express();
 
@@ -37,6 +38,8 @@ app.use(
     saveUninitialized: true
   })
 );
+
+swaggerDoc(app);
 
 // Passport middleware
 app.use(passport.initialize());
