@@ -15,7 +15,7 @@ module.exports = {
       "computed-property-spacing": ["error", "never"],
       "brace-style": ["error"],
       "func-call-spacing": ["error", "never"],
-      "id-length": ["error", { "min": 3 }],
+      "id-length": ["error", { "min": 2 }],
       "array-bracket-newline": ["error", { "multiline": true, "minItems": 2 }],
       "quote-props": ["error", "as-needed"],
       "semi": "error",
