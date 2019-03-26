@@ -4,18 +4,16 @@ const passport = require("passport");
 const cors = require("cors");
 const notFoundHandler = require("../middleware/not-found");
 const serverErrorHandler = require("../middleware/server-error");
-const { ensureAuthenticated } = require("../middleware/authCheck");
 const config = require("../../config/config");
 
 const UserController = require("../controllers/user");
+const UserFinance = require("../controllers/userFinance.js");
 
 const passportCheck = (req, res, next) =>
   passport.authenticate("jwt", {
     session: false,
     failWithError: true
   })(req, res, next);
-
-const finance = require("./finance");
 
 const setupCORSForDevelopment = developmentUrl => {
   const corsOptions = {
@@ -152,9 +150,6 @@ router.post("/register", UserController.userRegister);
  */
 router.post("/login", UserController.userLogin);
 
-router.post("/forgot", UserController.forgotPassword);
-router.get("/reset/:token", UserController.resetPassword);
-
 // Routes Must have checked function of JWT exp
 /**
  * @swagger
@@ -207,13 +202,6 @@ router.get("/data/:id", passportCheck, function(req, res) {
   res.status(200).json(req.user);
 });
 
-// Dashboard with checking user is authenticated?
-router.get("/dashboard", ensureAuthenticated, (req, res) =>
-  res.render("dashboard", {
-    user: req.user
-  })
-);
-
 // User finance manipulation
 /**
  * @swagger
@@ -225,8 +213,15 @@ router.get("/dashboard", ensureAuthenticated, (req, res) =>
  *        scheme: bearer
  *        bearerFormat: JWT
  *     parameters:
+ *            - in: path
+ *              name: userId
+ *              description: user ID must ending url(path) to fetch
+ *              required: true
+ *              schema:
+ *                type: string
  *            - in: header
  *              name: Authorization
+ *              description: Must present in Headers to access to this route
  *              required: true
  *              schema:
  *                type: string
@@ -264,8 +259,84 @@ router.get("/dashboard", ensureAuthenticated, (req, res) =>
  *                  type: boolean
  *                  example: false
  */
-router.get("/finance/:userId", passportCheck, finance.getFinance);
-router.post("/finance/:userId", passportCheck, finance.saveFinance);
+router.get("/finance/:userId", passportCheck, UserFinance.getFinance);
+/**
+ * @swagger
+ *
+ * /api/finance/{userId}:
+ *    post:
+ *     security:
+ *        type: http
+ *        scheme: bearer
+ *        bearerFormat: JWT
+ *     parameters:
+ *            - in: path
+ *              name: userId
+ *              description: user ID must ending url(path) to fetch
+ *              required: true
+ *              schema:
+ *                type: string
+ *            - in: header
+ *              name: Authorization
+ *              description: Must present in Headers to access to this route
+ *              required: true
+ *              schema:
+ *                type: string
+ *                example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjOTk2MmQ0ZGVlOWJhNDAyYzJhODZmOSIsImVtYWlsIjoiM3YyaWt0bzN3d3I0QHRlc3R0a2hpcy5jb20iLCJuYW1lIjoiVGVzdCBTdXBlIiwiaWF0IjoxNTUzNTU3NzI0LCJleHAiOjE1NTM1Njc3MjR9.Yuqy_d1NheW5osTAdzjSUrgAurZtXIZMjQnpTTufzhs"
+ *              style: simple
+ *     tags:
+ *       - Protected Routes
+ *     responses:
+ *       200:
+ *         description: Return json with User data create
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                success:
+ *                  type: boolean
+ *                  example: true
+ *                message:
+ *                  type: object
+ *                  example: "Data found with this ID"
+ *                finance:
+ *                  type: object
+ *                  example: {"_id": "5c9396e2bc4e0d8ec4c45f64","data": [{"comments": "cool","_id": "5c93a50a9fd94d958fb18df1","dateEvent": "1994824666","typeEvent": "+","category": "Other","amountEvent": 205,"balanceAfter": 1293523},{}],"userId": "5c9396e2bc4e0d8ec4c45f63"}
+ *       400:
+ *         description: If not correct data request
+ *         content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  example: "Not found finance data with this user ID"
+ *                success:
+ *                  type: boolean
+ *                  example: false
+ */
+router.post("/finance/:userId", passportCheck, UserFinance.saveFinance);
+
+/**
+ * @swagger
+ *
+ * /api/forgot:
+ *   post:
+ *     tags:
+ *       - User password manipulation
+ */
+router.post("/forgot", UserController.forgotPassword);
+
+/**
+ * @swagger
+ *
+ * /api/reset/{token}:
+ *   post:
+ *     tags:
+ *       - User password manipulation
+ */
+router.get("/reset/:token", UserController.resetPassword);
 
 router.use(notFoundHandler);
 router.use(serverErrorHandler);
