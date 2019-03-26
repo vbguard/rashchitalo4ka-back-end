@@ -51,7 +51,22 @@ app.use(flash());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Content-Length",
+      "X-Requested-With",
+      "Accept"
+    ],
+    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
+  })
+);
+
+app.options(
+  "*",
+  cors({
+    origin: "*",
     allowedHeaders: [
       "Content-Type",
       "Authorization",
