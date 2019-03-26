@@ -40,7 +40,14 @@ app.use(
   })
 );
 
-swaggerDoc(app);
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 // Passport middleware
 app.use(passport.initialize());
@@ -48,20 +55,6 @@ app.use(passport.session());
 
 // Connect flash
 app.use(flash());
-
-app.use(
-  cors({
-    origin: "*",
-    allowedHeaders: [
-      "Content-Type",
-      "Authorization",
-      "Content-Length",
-      "X-Requested-With",
-      "Accept"
-    ],
-    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
-  })
-);
 
 app.options(
   "*",
@@ -85,6 +78,8 @@ app.use(function(req, res, next) {
   res.locals.error = req.flash("error");
   next();
 });
+
+swaggerDoc(app);
 
 // Connecting All API Routes
 app.use("/api", routes);
