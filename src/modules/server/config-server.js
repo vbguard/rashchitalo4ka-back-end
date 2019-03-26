@@ -4,6 +4,7 @@ const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const swaggerDoc = require("../swagger/swaggerDoc");
 const routes = require("../../routes/routes");
@@ -47,6 +48,20 @@ app.use(passport.session());
 
 // Connect flash
 app.use(flash());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Content-Length",
+      "X-Requested-With",
+      "Accept"
+    ],
+    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
+  })
+);
 
 // Global variables
 app.use(function(req, res, next) {
