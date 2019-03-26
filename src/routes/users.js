@@ -1,5 +1,5 @@
-const bcrypt = require("bcryptjs");
-const passport = require("passport");
+const bcrypt = require("bcrypt");
+// const passport = require("passport");
 
 // Load User model
 const User = require("../models/User.model");
@@ -9,8 +9,7 @@ const UserFinance = require("../models/UserFinance.model");
 module.exports.postRegister = (req, res) => {
   const { name, email, password, password2 } = req.body;
   let errors = [];
-
-  console.log(req.body);
+  let userResp = {};
 
   if (!name || !email || !password || !password2) {
     errors.push({ msg: "Please enter all fields" });
@@ -26,7 +25,7 @@ module.exports.postRegister = (req, res) => {
 
   if (errors.length > 0) {
     res
-      .status(301)
+      .status(406)
       .json({
         errors,
         name,
@@ -57,18 +56,27 @@ module.exports.postRegister = (req, res) => {
             newUser
               .save()
               .then(user => {
+                userResp.id = user._id;
+                userResp.name = user.name;
+                userResp.email = user.email;
+
                 const newUserFinance = new UserFinance({
                   userId: user._id
                 });
 
                 newUserFinance.save().then(userFinance => {
+                  userResp.finance = {
+                    userFinanceId: userFinance._id,
+                    userId: userFinance.userId,
+                    data: userFinance.data
+                  };
+                  userResp.path = "/login";
+
                   req.flash(
                     "success_msg",
                     "You are now registered and can log in"
                   );
-                  res
-                    .json({ userData: user, userFinance, path: "/login" })
-                    .redirect("/login");
+                  res.json(userResp).redirect("/login");
                 });
               })
               .catch(err => console.log(err));
@@ -80,20 +88,20 @@ module.exports.postRegister = (req, res) => {
 };
 
 // Login
-module.exports.postLogin = (req, res, next) => {
-  passport.authenticate("local", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/login",
-    failureFlash: true
-  })(req, res, next);
+module.exports.postLogin = (req, res) => {
+  // passport.authenticate("local", {
+  //   successRedirect: "/dashboard",
+  //   failureRedirect: "/login",
+  //   failureFlash: true
+  // })(req, res, next);
+  console.log(req.isAuthenticated());
+  res.status(200).send(req.user);
 };
 
 // Logout
 module.exports.getLogout = (req, res) => {
   req.logout();
   req.flash("success_msg", "You are logged out");
-  res
-    .status(200)
-    .json({ path: "/login" })
-    .redirect("/login");
+  res.status(200).json({ path: "/login" });
+  // .redirect("/login");
 };
