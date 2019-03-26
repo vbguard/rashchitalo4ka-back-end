@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const cors = require("cors");
 const notFoundHandler = require("../middleware/not-found");
 const serverErrorHandler = require("../middleware/server-error");
 const { ensureAuthenticated } = require("../middleware/authCheck");
+const config = require("../../config/config");
 
 const UserController = require("../controllers/user");
 
@@ -14,6 +16,33 @@ const passportCheck = (req, res, next) =>
   })(req, res, next);
 
 const finance = require("./finance");
+
+const setupCORSForDevelopment = developmentUrl => {
+  const corsOptions = {
+    origin: developmentUrl,
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Content-Length",
+      "X-Requested-With",
+      "Accept"
+    ],
+    methods: ["GET", "PUT", "POST", "DELETE", "OPTIONS"]
+  };
+
+  router.use(cors(corsOptions));
+};
+
+if (process.env.NODE_ENV === "development") {
+  const { client } = config;
+  const developmentUrl = `${client.development.url}:${client.development.port}`;
+
+  setupCORSForDevelopment(developmentUrl);
+}
+
+if (process.env.NODE_ENV === "production") {
+  // Setup CORS for production
+}
 
 // Routes Not checked JWT
 
