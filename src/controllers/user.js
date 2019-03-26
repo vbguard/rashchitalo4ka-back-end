@@ -27,7 +27,6 @@ module.exports.userLogout = (req, res) => {
 // Register New User and Check this email have in DB
 module.exports.userRegister = (req, res) => {
   const { name, email, password } = req.body;
-  console.log(req.body, req.data);
   const error = [];
 
   if (!email || !password || !name) {
