@@ -12,7 +12,6 @@
     "lint": "eslint \"**/*.js\""
   },
   "dependencies": {
-    "bcryptjs": "2.4.3",
     "connect-flash": "0.1.1",
     "cors": "2.8.5",
     "dotenv": "7.0.0",
