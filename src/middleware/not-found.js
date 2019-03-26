@@ -4,7 +4,7 @@ const messages = {
 
 const notFoundHandler = (req, res) => {
   res.status(404).json({
-    err: messages.notFound
+    error: messages.notFound
   });
 };
 

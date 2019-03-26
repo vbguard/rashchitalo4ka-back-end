@@ -33,8 +33,8 @@ app.use(express.urlencoded({ extended: true }));
 // Express session
 app.use(
   session({
-    secret: "secret",
-    resave: true,
+    secret: "secret cat",
+    resave: false,
     saveUninitialized: true
   })
 );
