@@ -1,17 +1,25 @@
 const UserFinance = require("../models/UserFinance.model");
 
 module.exports.getFinance = (req, res) => {
-  UserFinance.findOne({ userId: req.params.id }).exec((err, doc) => {
-    if (err) console.log(err);
+  UserFinance.findOne({ userId: req.params.userId }).then(doc => {
+    if (!doc) {
+      res.status(400).json({
+        success: false,
+        message: "Not found finance data with this user ID"
+      });
+    }
+
     res.status(200).json({
-      msg: "success",
-      data: doc
+      success: true,
+      message: "Data found with this ID",
+      finance: doc
     });
   });
 };
 
 module.exports.saveFinance = (req, res) => {
-  const userId = req.body.userId;
+  const userId = req.params.userId;
+
   const newData = {
     dateEvent: req.body.data.dateEvent,
     typeEvent: req.body.data.typeEvent,

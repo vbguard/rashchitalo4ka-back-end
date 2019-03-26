@@ -5,6 +5,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const morgan = require("morgan");
 
+const swaggerDoc = require("../swagger/swaggerDoc");
 const routes = require("../../routes/routes");
 const app = express();
 
@@ -32,11 +33,13 @@ app.use(express.urlencoded({ extended: true }));
 // Express session
 app.use(
   session({
-    secret: "secret",
-    resave: true,
+    secret: "secret cat",
+    resave: false,
     saveUninitialized: true
   })
 );
+
+swaggerDoc(app);
 
 // Passport middleware
 app.use(passport.initialize());
