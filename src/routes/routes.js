@@ -221,7 +221,7 @@ router.get("/data/:id", passportCheck, function(req, res) {
  *                type: string
  *            - in: header
  *              name: Authorization
- *              description: Must present in Headers to access to this route
+ *              description: Must present in Headers to access to this route. Example - "Authorization" "Bearer eyJhbGciOiJIUzI1N..."
  *              required: true
  *              schema:
  *                type: string
@@ -278,7 +278,7 @@ router.get("/finance/:userId", passportCheck, UserFinance.getFinance);
  *                type: string
  *            - in: header
  *              name: Authorization
- *              description: Must present in Headers to access to this route
+ *              description: Must present in Headers to access to this route. Example - "Authorization" "Bearer eyJhbGciOiJIUzI1N..."
  *              required: true
  *              schema:
  *                type: string
@@ -286,6 +286,36 @@ router.get("/finance/:userId", passportCheck, UserFinance.getFinance);
  *              style: simple
  *     tags:
  *       - Protected Routes
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *              - date
+ *              - type
+ *              - category
+ *              - amount
+ *              - balanceAfter
+ *             properties:
+ *               date:
+ *                 type: number
+ *                 example: 1553699509960
+ *               type:
+ *                  type: string
+ *                  example: "+ or -"
+ *               category:
+ *                  type: string
+ *                  example: "Job"
+ *               amount:
+ *                  type: number
+ *                  example: 2000
+ *               balanceAfter:
+ *                  type: number
+ *                  example: 3000
+ *               comments:
+ *                  type: string
+ *                  example: "get money by my Job"
  *     responses:
  *       200:
  *         description: Return json with User data create
