@@ -302,7 +302,7 @@ router.get("/finance/:userId", passportCheck, UserFinance.getFinance);
  *                  example: "Data found with this ID"
  *                finance:
  *                  type: object
- *                  example: {"_id": "5c9396e2bc4e0d8ec4c45f64","data": [{"comments": "cool","_id": "5c93a50a9fd94d958fb18df1","dateEvent": "1994824666","typeEvent": "+","category": "Other","amountEvent": 205,"balanceAfter": 1293523},{}],"userId": "5c9396e2bc4e0d8ec4c45f63"}
+ *                  example: {"_id": "5c9396e2bc4e0d8ec4c45f64","data": [{"comments": "buy to home Divan","_id": "5c9b88bbfddb83212234a926","date": 199482466656,"type": "+","category": "Job","amount": 2000,"balanceAfter": 6000,"updatedAt": "2019-03-27T14:29:15.184Z","createdAt": "2019-03-27T14:29:15.184Z"}, {}, {}],"userId": "5c9396e2bc4e0d8ec4c45f63","totalBalance": 6000,"updatedAt": "2019-03-27T14:29:15.184Z"}
  *       400:
  *         description: If not correct data request
  *         content:
@@ -316,7 +316,7 @@ router.get("/finance/:userId", passportCheck, UserFinance.getFinance);
  *                  type: boolean
  *                  example: false
  */
-router.post("/finance/:userId", passportCheck, UserFinance.saveFinance);
+router.post("/finance/:userId", UserFinance.saveFinance);
 
 /**
  * @swagger

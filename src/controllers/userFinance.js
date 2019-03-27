@@ -23,31 +23,29 @@ module.exports.saveFinance = (req, res) => {
   const userId = req.params.userId;
 
   const newData = {
-    dateEvent: req.body.data.dateEvent,
-    typeEvent: req.body.data.typeEvent,
-    category: req.body.data.category,
-    comments: req.body.data.comments,
-    amountEvent: req.body.data.amountEvent,
-    balanceAfter: req.body.data.balanceAfter
+    date: req.body.date,
+    type: req.body.type,
+    category: req.body.category,
+    comments: req.body.comments,
+    amount: req.body.amount,
+    balanceAfter: req.body.balanceAfter
   };
 
   UserFinance.findOneAndUpdate(
     { userId },
     { $push: { data: newData }, totalBalance: newData.balanceAfter },
     { new: true, upsert: true }
-  )
-    .lean()
-    .exec(function(err, docs) {
-      if (err) {
-        res.status(400).json({
-          success: false,
-          message: err
-        });
-      }
-      res.status(200).json({
-        success: true,
-        message: "Data updated",
-        data: docs
+  ).then((doc, err) => {
+    if (err) {
+      res.status(400).json({
+        success: false,
+        message: "Not found finance data with this user ID"
       });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Data found with this ID",
+      finance: doc
     });
+  });
 };
