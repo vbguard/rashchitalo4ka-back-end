@@ -11,6 +11,9 @@ const UserFinanceSchema = new Schema(
     data: [EventSchema],
     totalBalance: {
       type: Number
+    },
+    typeTotalBalance: {
+      type: String
     }
   },
   {
