@@ -76,7 +76,9 @@ module.exports.userRegister = (req, res) => {
         // Attempt to save the user
         newUser.save().then(user => {
           const newUserFinance = new UserFinance({
-            userId: user._id
+            userId: user._id,
+            totalBalance: 0,
+            typeTotalBalance: "+"
           });
 
           newUserFinance.save(err => {
