@@ -28,12 +28,17 @@ module.exports.saveFinance = (req, res) => {
     category: req.body.category,
     comments: req.body.comments,
     amount: req.body.amount,
-    balanceAfter: req.body.balanceAfter
+    balanceAfter: req.body.balanceAfter,
+    typeBalanceAfter: req.body.typeBalanceAfter
   };
 
   UserFinance.findOneAndUpdate(
     { userId },
-    { $push: { data: newData }, totalBalance: newData.balanceAfter },
+    {
+      $push: { data: newData },
+      totalBalance: newData.balanceAfter,
+      typeTotalBalance: newData.typeBalanceAfter
+    },
     { new: true, upsert: true }
   ).then((doc, err) => {
     if (err) {

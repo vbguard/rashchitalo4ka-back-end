@@ -25,6 +25,10 @@ const EventSchema = new mongoose.Schema(
     balanceAfter: {
       type: Number,
       required: true
+    },
+    typeBalanceAfter: {
+      type: String,
+      required: true
     }
   },
   {
