@@ -67,17 +67,13 @@ UserSchema.methods.validPassword = function(password) {
 };
 
 UserSchema.methods.getJWT = function() {
-  let expiration_time = parseInt(CONFIG.jwt_expiration);
   return (
     "JWT " +
     jwt.sign(
       {
         user_id: this._id
       },
-      CONFIG.jwt_encryption,
-      {
-        expiresIn: expiration_time
-      }
+      CONFIG.jwt_encryption
     )
   );
 };

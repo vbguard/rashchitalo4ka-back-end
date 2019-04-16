@@ -61,7 +61,8 @@ module.exports = function(passport) {
               const userData = {
                 id: String(user._id),
                 email: user.email,
-                name: user.name
+                name: user.name,
+                createAt: user.createAt
               };
 
               if (user.first) {

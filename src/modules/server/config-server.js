@@ -63,6 +63,12 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.use("/", express.static("public"));
+app.use("/registration", express.static("public"));
+app.use("/login", express.static("public"));
+app.use("/dashboard", express.static("public"));
+app.use("/dashboard/currency", express.static("public"));
+app.use("/dashboard/diagram", express.static("public"));
 swaggerDoc(app);
 
 // Connecting All API Routes
