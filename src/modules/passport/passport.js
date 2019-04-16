@@ -58,11 +58,12 @@ module.exports = function(passport) {
                   message: "Incorrect email or password."
                 });
               }
+
               const userData = {
                 id: String(user._id),
                 email: user.email,
                 name: user.name,
-                createAt: user.createAt
+                createdAt: user.createdAt
               };
 
               if (user.first) {

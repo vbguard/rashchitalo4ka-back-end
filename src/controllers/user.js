@@ -162,7 +162,6 @@ module.exports.userLogin = (req, res) => {
           }
 
           const token = jwt.sign(user, config.jwt_encryption);
-
           return res.json({
             user,
             token
