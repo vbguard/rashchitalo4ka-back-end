@@ -40,6 +40,7 @@ if (process.env.NODE_ENV === "development") {
 
 if (process.env.NODE_ENV === "production") {
   // Setup CORS for production
+  router.use(cors("*"));
 }
 
 // Routes Not checked JWT
