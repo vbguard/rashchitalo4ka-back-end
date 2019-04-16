@@ -58,8 +58,6 @@ module.exports.userRegister = (req, res) => {
           password: req.body.password
         });
 
-        console.log(newUser);
-
         if (req.body.first) {
           newUser.first = req.body.first;
         }
@@ -164,7 +162,6 @@ module.exports.userLogin = (req, res) => {
           }
 
           const token = jwt.sign(user, config.jwt_encryption);
-          console.log(user);
           return res.json({
             user,
             token

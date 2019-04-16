@@ -63,7 +63,7 @@ module.exports = function(passport) {
                 id: String(user._id),
                 email: user.email,
                 name: user.name,
-                createAt: user.createdAt
+                createdAt: user.createdAt
               };
 
               if (user.first) {
