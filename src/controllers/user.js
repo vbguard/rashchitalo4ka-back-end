@@ -163,10 +163,8 @@ module.exports.userLogin = (req, res) => {
             res.status(301).json({ err });
           }
 
-          const token = jwt.sign(user, config.jwt_encryption, {
-            expiresIn: config.jwt_expiration
-          });
-
+          const token = jwt.sign(user, config.jwt_encryption);
+          console.log(user);
           return res.json({
             user,
             token
