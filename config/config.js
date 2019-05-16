@@ -1,6 +1,6 @@
 module.exports = {
   MondoDB: {
-    url: "mongodb://127.0.0.1/rashchitalochka"
+    url: "mongodb://rash:ZBqZ_Yy8hGF2@127.0.0.1:27017/rashchitalochka"
   },
   client: {
     development: {
